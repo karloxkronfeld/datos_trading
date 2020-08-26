@@ -45,7 +45,7 @@ class VerDatos:
         self.Industrial = ['BA', 'HON', 'UTX', 'LMT', 'DHR', 'MMM', 'GE', 'CAT', 'NOC', 'GD', 'DE', 'RTN', 'ITW', 'WM',
                            'EMR', 'ABB']
 
-    def graficar(self, volumen=False, media_movil=20, n_bins=20, margen=0.2, soportes_resistencias=False):
+    def graficar(self, volumen=False, media_movil=20, n_bins=20, margen=0.2, soportes_resistencias=False, covid=True):
 
         colores = mplfinance.make_marketcolors(up="forestgreen", down="crimson")
         estilo = mplfinance.make_mpf_style(marketcolors=colores)
@@ -87,17 +87,22 @@ class VerDatos:
             #       "\ndatos.graficar(soportes_resistencias=True,n_bins=100,margen=1 )"
             #       )
         else:
-            # apdict = mplfinance.make_addplot(self.low)
+
+            if covid == True and pd.to_datetime(self.fecha_inicial)<pd.to_datetime("2019-12-31"):
+                con_covid=dict(vlines=["2020-01-01", "2020-03-11"],
+                                     linewidths=[0.1, 0.1],
+                                     colors=["k", "r"],
+                                     linestyle="--")
+            else:
+                con_covid=[]
+
             setup = dict(type="candle",
                          volume=volumen,
                          mav=media_movil,
                          style=estilo,
                          title=self.simbolo,
                          hlines=dict(hlines=self.precio[-1], linestyle="--", colors="k"),
-                         vlines=dict(vlines=["2020-01-01", "2020-03-11"],
-                                     linewidths=[0.1, 0.1],
-                                     colors=["k", "r"],
-                                     linestyle="--"),
+                         vlines=con_covid,
                          alines=dict(alines=[(self.precio.index[este_x], self.precio.values[este_x])
                                              for este_x in arange(0, len(self.precio), 10)],linewidths=30,
                                      alpha=0.3,colors="darkgreen")
