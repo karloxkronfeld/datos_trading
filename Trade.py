@@ -15,7 +15,7 @@ from Datos import VerDatos
 #               'EMR', 'ABB']
 
 misdatos = VerDatos("MSFT","2019-01-01","2020-09-01")
-misdatos.graficar(volumen=True,media_movil=[20,50,200],soportes_resistencias=False,covid=True)
+misdatos.graficar(volumen=True,media_movil=[20,50,200],soportes_resistencias=True,covid=True)
 
 # comparar=VerDatos(fecha_inicial="2010-01-01",fecha_final="2020-09-01")
 # comparar.subplots(["AMZN","GOOG","AAPL","CRM","FB","JPM","NKE","KO","DIS"])

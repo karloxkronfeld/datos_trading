@@ -52,6 +52,14 @@ class VerDatos:
 
         if soportes_resistencias:
             self.sopyres["precio"] = self.precio
+            if covid == True and pd.to_datetime(self.fecha_inicial)<pd.to_datetime("2019-12-31"):
+                con_covid=dict(vlines=["2020-01-01", "2020-03-11"],
+                                     linewidths=[0.1, 0.1],
+                                     colors=["k", "r"],
+                                     linestyle="--")
+            else:
+                con_covid=[]
+
             for losx in range((n_bins - 1) + n_bins, len(self.sopyres)):
                 seleccion = self.sopyres[losx - n_bins: losx + 1]
                 nivel_soporte = min(seleccion.precio)
@@ -65,10 +73,8 @@ class VerDatos:
             maximini = [mplfinance.make_addplot(self.sopyres["sop_tolera"], color='g'),
                         mplfinance.make_addplot(self.sopyres["res_tolera"], color='r')]
             setup = dict(type="candle", volume=volumen, mav=media_movil, style=estilo, title=self.simbolo,
-                         addplot=maximini, vlines=dict(vlines=["2020-01-01", "2020-03-11"],
-                                                       linewidths=[0.1, 0.1],
-                                                       colors=["k", "r"],
-                                                       linestyle="-."),
+                         addplot=maximini,
+                         vlines=con_covid,
                          hlines=dict(hlines=self.precio[-1], linestyle="--", colors="k"),
                          alines=dict(alines=[(self.high.index[este_x], self.high.values[este_x])
                                              for este_x in arange(0, len(self.high), 20)])
